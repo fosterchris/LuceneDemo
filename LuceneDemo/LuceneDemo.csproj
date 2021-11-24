@@ -7,4 +7,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00015" />
+    <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00015" />
+    <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00015" />
+    <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00015" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+  </ItemGroup>
+
 </Project>
