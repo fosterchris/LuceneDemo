@@ -1,21 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-var serviceCollection = new ServiceCollection();
 
-IServiceProvider provider = serviceCollection.BuildServiceProvider();
+var provider = ServiceProviderCreator.Create();
+var queryDemo = provider.GetRequiredService<IQueryCreator>();
 
-while(true)
+while (true)
 {
-    var input = Console.ReadLine();
-
+    var input = Console.ReadLine() ?? "n";
+    var result = queryDemo.SearchIndex(input).ToList();
     //get provider 
 
     //Do searches with scores
-
-    Console.WriteLine(input);
-    Console.WriteLine("Do you want to quit? (y/n)");
-    if (Console.ReadKey().KeyChar.ToString() == "y")
-    {
-        break;
-    }
+    result.ForEach(Console.WriteLine);
+    Console.WriteLine("-- NextSearch --");
 }
+

@@ -5,7 +5,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 
-public class DirectoryBuilder
+public class DirectoryBuilder : IDirectoryBuilder
 {
     private readonly LuceneVersion _luceneVersion = LuceneVersion.LUCENE_CURRENT;
     private readonly Analyzer _analyzer;
@@ -25,17 +25,13 @@ public class DirectoryBuilder
 
         // Store the index in memory:
         var directory = new RAMDirectory();
-        // To store an index on disk, use this instead:
-        // Construct a machine-independent path for the index
-        //var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        //var indexPath = Path.Combine(basePath, "index");
-        //Directory directory = FSDirectory.Open(indexPath);
         IndexWriterConfig config = new IndexWriterConfig(_luceneVersion, _analyzer);
         using IndexWriter iwriter = new IndexWriter(directory, config);
 
         Document doc = new Document();
-        String text = "melons potatoes";
-        doc.Add(new Field("ingredients", text, TextField.TYPE_STORED));
+        var text = "melons potatoes";
+        doc.Add(new Field("ingredients", text, TextField.TYPE_NOT_STORED));
+        doc.Add(new Field("Title", "potato stew", TextField.TYPE_STORED));
         iwriter.AddDocument(doc);
         iwriter.Dispose();
 
