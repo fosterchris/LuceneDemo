@@ -10,6 +10,8 @@ while (true)
     var result = queryDemo.SearchIndex(input).ToList();
     //get provider 
 
+    Console.WriteLine($"SearchTerm: {input}");
+    Console.WriteLine("Results:");
     //Do searches with scores
     result.ForEach(Console.WriteLine);
     Console.WriteLine("-- NextSearch --");
