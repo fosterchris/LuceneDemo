@@ -6,6 +6,7 @@ public static class ServiceProviderCreator
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton<IDirectoryBuilder, DirectoryBuilder>();
+        serviceCollection.AddSingleton<IPatternTokenizer, PatternTokenizer>();
         serviceCollection.AddTransient<IQueryCreator, QueryCreator>();
         return serviceCollection.BuildServiceProvider();
     }
