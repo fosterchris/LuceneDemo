@@ -25,7 +25,7 @@ public class QueryCreator : IQueryCreator
 
         if (terms.Count == 0) yield break;
 
-        var query = new TermQuery(new Term("Fact", terms.First()));
+        var query = GetSingleTermQuery(terms);
 
         ScoreDoc[] hits = isearcher.Search(query, null, 1000).ScoreDocs;
 
@@ -36,7 +36,12 @@ public class QueryCreator : IQueryCreator
             yield return hitDoc.Get("Fact");
         }
     }
-    
+
+    private Query GetSingleTermQuery(List<string> terms)
+    {
+        return new TermQuery(new Term("Fact", terms.First()));
+    }
+
     private Query GetMultiTermQuery(List<string> terms)
     {
         var queries = terms.Select(t => new TermQuery(new Term("Fact", t))).ToList();
