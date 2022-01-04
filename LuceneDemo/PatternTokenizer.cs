@@ -6,7 +6,10 @@ public class PatternTokenizer : IPatternTokenizer
         public IEnumerable<string> GetTerms(string queryString)
         {
             var analyzer = new OurAnalyzer();
-            var stream = analyzer.GetTokenStream("null_term_field", queryString);
+
+            //We must pass a field name into the analyser as it can contain "by field" representation
+            //Fact is the same as we use before
+            var stream = analyzer.GetTokenStream("Fact", queryString);
 
             // get the CharTermAttribute from the TokenStream
             var termAtt = stream.AddAttribute<ICharTermAttribute>();

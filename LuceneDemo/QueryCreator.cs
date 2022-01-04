@@ -23,9 +23,12 @@ public class QueryCreator : IQueryCreator
 
         var terms = _patternTokenizer.GetTerms(queryString).ToList();
 
-        var query = new TermQuery(new Term("Fact", terms.First()));
+        if (terms.Count == 0) yield break;
+
+        var query = GetFuzzyQuery(terms);
 
         ScoreDoc[] hits = isearcher.Search(query, null, 1000).ScoreDocs;
+
         // Iterate through the results:
         for (int i = 0; i < hits.Length; i++)
         {
@@ -36,16 +39,15 @@ public class QueryCreator : IQueryCreator
 
     private Query GetMultiTermQuery(List<string> terms)
     {
-        var queries = terms.Select(t => new TermQuery(new Term("Fact", t))).ToList();
+        var queries = terms.Select(t => new PrefixQuery(new Term("Fact", t))).ToList();
         var bq = new BooleanQuery();
-        queries.ForEach(q => bq.Add(q, Occur.SHOULD));
+        queries.ForEach(q => bq.Add(q, Occur.MUST));
 
         return bq;
     }
 
     private Query GetFuzzyQuery(List<string> terms)
     {
-        var query = terms.First() ?? "";
         var fq = new FuzzyQuery(new Term("Fact", terms.First()));
         return fq;
     }
