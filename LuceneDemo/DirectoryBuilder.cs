@@ -6,7 +6,6 @@ using Lucene.Net.Util;
 
 public class DirectoryBuilder : IDirectoryBuilder
 {
-    private readonly LuceneVersion _luceneVersion = LuceneVersion.LUCENE_48;
     private readonly Analyzer _analyzer;
     private Lucene.Net.Store.Directory _index;
 
@@ -24,7 +23,7 @@ public class DirectoryBuilder : IDirectoryBuilder
 
         // Store the index in memory:
         var directory = new RAMDirectory();
-        IndexWriterConfig config = new IndexWriterConfig(_luceneVersion, _analyzer);
+        IndexWriterConfig config = new IndexWriterConfig(LuceneVersion.LUCENE_48, _analyzer);
         using IndexWriter iwriter = new IndexWriter(directory, config);
 
         var doc = CreateDocument("Joe Bloggs", "Potato contains vitamin B6");
