@@ -6,16 +6,17 @@ using Lucene.Net.Util;
 
 public class DirectoryBuilder : IDirectoryBuilder
 {
-    private readonly LuceneVersion _luceneVersion = LuceneVersion.LUCENE_CURRENT;
+    private readonly LuceneVersion _luceneVersion = LuceneVersion.LUCENE_48;
     private readonly Analyzer _analyzer;
     private Lucene.Net.Store.Directory _index;
 
     public DirectoryBuilder()
     {
         _analyzer = new OurAnalyzer();
+        _index = BuildDirectory();
     }
 
-    public Lucene.Net.Store.Directory GetIndex { get => _index ?? BuildDirectory(); }
+    public Lucene.Net.Store.Directory GetIndex { get => _index; }
 
     private RAMDirectory BuildDirectory()
     {
@@ -29,21 +30,21 @@ public class DirectoryBuilder : IDirectoryBuilder
         var doc = CreateDocument("Joe Bloggs", "Potato contains vitamin B6");
         var doc2 = CreateDocument("Steve Irwin", "Vodka can be made with potatoes");
 
-        iwriter.AddDocument(doc, _analyzer);
-        iwriter.AddDocument(doc2, _analyzer);
+        iwriter.AddDocument(doc);
+        iwriter.AddDocument(doc2);
         iwriter.Dispose();
 
         _index = directory;
         return directory;
     }
 
-    private Document CreateDocument(string author, string fact)
+    private Document CreateDocument(string submitter, string fact)
     {
         Document doc = new Document();
 
         //Standard example of getting title
         doc.Add(new Field("Fact", fact, TextField.TYPE_STORED));
-        doc.Add(new Field("Author", author, TextField.TYPE_STORED));
+        doc.Add(new Field("Submitter", submitter, TextField.TYPE_STORED));
 
         //Standard example to show normalisation
         return doc;

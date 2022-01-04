@@ -8,7 +8,6 @@ public class PatternTokenizer : IPatternTokenizer
             var analyzer = new OurAnalyzer();
 
             //We must pass a field name into the analyser as it can contain "by field" representation
-            //Fact is the same as we use before
             var stream = analyzer.GetTokenStream("Fact", queryString);
 
             // get the CharTermAttribute from the TokenStream

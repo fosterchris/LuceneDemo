@@ -6,14 +6,16 @@ var queryDemo = provider.GetRequiredService<IQueryCreator>();
 
 while (true)
 {
+    Console.WriteLine($"Enter SearchTerm:");
     var input = Console.ReadLine() ?? "n";
     var result = queryDemo.SearchIndex(input).ToList();
     //get provider 
 
-    Console.WriteLine($"SearchTerm: {input}");
+    Console.WriteLine("---------");
     Console.WriteLine("Results:");
     //Do searches with scores
     result.ForEach(Console.WriteLine);
+    Console.WriteLine("---------");
     Console.WriteLine("-- NextSearch --");
 }
 

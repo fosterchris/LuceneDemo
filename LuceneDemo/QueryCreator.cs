@@ -25,7 +25,7 @@ public class QueryCreator : IQueryCreator
 
         if (terms.Count == 0) yield break;
 
-        var query = GetFuzzyQuery(terms);
+        var query = new TermQuery(new Term("Fact", terms.First()));
 
         ScoreDoc[] hits = isearcher.Search(query, null, 1000).ScoreDocs;
 
@@ -36,19 +36,19 @@ public class QueryCreator : IQueryCreator
             yield return hitDoc.Get("Fact");
         }
     }
-
+    
     private Query GetMultiTermQuery(List<string> terms)
     {
-        var queries = terms.Select(t => new PrefixQuery(new Term("Fact", t))).ToList();
+        var queries = terms.Select(t => new TermQuery(new Term("Fact", t))).ToList();
         var bq = new BooleanQuery();
-        queries.ForEach(q => bq.Add(q, Occur.MUST));
+        queries.ForEach(q => bq.Add(q, Occur.SHOULD));
 
         return bq;
     }
 
     private Query GetFuzzyQuery(List<string> terms)
     {
-        var fq = new FuzzyQuery(new Term("Fact", terms.First()));
+        var fq = new FuzzyQuery(new Term("Fact", terms.First()), 2);
         return fq;
     }
 }
